@@ -1,4 +1,5 @@
 import { v4 } from 'uuid';
+import { isEqual } from 'date-fns';
 
 import AppointmentsRepository from '@modules/appointments/repositories/AppointmentsRepository';
 import CreateAppointmentDTO from '@modules/appointments/dtos/CreateAppointmentDTO';
@@ -21,8 +22,8 @@ class FakeAppointmentsRepository implements AppointmentsRepository {
   }
 
   public async findByDate(date: Date): Promise<Appointment | undefined> {
-    const foundAppointment = this.appointments.find(
-      appointment => appointment.date === date,
+    const foundAppointment = this.appointments.find(appointment =>
+      isEqual(appointment.date, date),
     );
 
     return foundAppointment;
