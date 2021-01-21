@@ -4,7 +4,7 @@ import CreateUserDTO from '@modules/users/dtos/CreateUserDTO';
 import UsersRepository from '@modules/users/repositories/UsersRepository';
 import User from '../../infra/typeorm/entities/User';
 
-class UsersRepositoryImplementation implements UsersRepository {
+class FakeUsersRepository implements UsersRepository {
   private users: User[] = [];
 
   public async create(data: CreateUserDTO): Promise<User> {
@@ -37,4 +37,4 @@ class UsersRepositoryImplementation implements UsersRepository {
   }
 }
 
-export default UsersRepositoryImplementation;
+export default FakeUsersRepository;
