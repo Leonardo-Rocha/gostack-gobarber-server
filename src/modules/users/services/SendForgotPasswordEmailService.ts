@@ -1,9 +1,8 @@
-import MailProvider from '@shared/container/providers/MailProvider/models/MailProvider';
-import AppError from '@shared/errors/AppError';
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-// import AppError from '@shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
+import MailProvider from '@shared/container/providers/MailProvider/models/MailProvider';
 import UsersRepository from '../repositories/UsersRepository';
 import UsersTokensRepository from '../repositories/UsersTokensRepository';
 
@@ -31,10 +30,17 @@ class SendForgotPasswordEmailService {
 
     const { token } = await this.usersTokensRepository.generate(foundUser.id);
 
-    await this.mailProvider.sendMail(
-      email,
-      `Pedido de recuperação de senha recebido: ${token}`,
-    );
+    await this.mailProvider.sendMail({
+      to: {
+        name: foundUser.name,
+        email: foundUser.email,
+      },
+      subject: '[GoBarber] Recuperação de senha',
+      templateData: {
+        template: 'Olá, {{name}}. Seu token de recuperação é {{token}}',
+        variables: { name: foundUser.name, token },
+      },
+    });
   }
 }
 
