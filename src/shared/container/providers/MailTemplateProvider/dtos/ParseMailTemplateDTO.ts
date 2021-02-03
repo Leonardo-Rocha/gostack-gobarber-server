@@ -3,7 +3,7 @@ interface TemplateVariables {
 }
 
 interface ParseMailTemplateDTO {
-  template: string;
+  file: string;
   variables: TemplateVariables;
 }
 

@@ -18,17 +18,21 @@ export default class EtherealMailProvider implements MailProvider {
     @inject('MailTemplateProvider')
     private mailTemplateProvider: MailTemplateProvider,
   ) {
-    nodemailer.createTestAccount().then(account => {
-      this.mailClient = nodemailer.createTransport({
-        host: account.smtp.host,
-        port: account.smtp.port,
-        secure: account.smtp.secure,
-        auth: {
-          user: account.user,
-          pass: account.pass,
-        },
-      });
-    });
+    nodemailer
+      .createTestAccount()
+      .then(account => {
+        this.mailClient = nodemailer.createTransport({
+          host: account.smtp.host,
+          port: account.smtp.port,
+          secure: account.smtp.secure,
+          auth: {
+            user: account.user,
+            pass: account.pass,
+          },
+        });
+        console.log('test account created:', this.mailClient);
+      })
+      .catch(err => console.log(err));
   }
 
   public async sendMail({
