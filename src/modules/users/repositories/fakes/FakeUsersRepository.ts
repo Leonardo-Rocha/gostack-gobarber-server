@@ -2,10 +2,22 @@ import { v4 as uuid } from 'uuid';
 
 import CreateUserDTO from '@modules/users/dtos/CreateUserDTO';
 import UsersRepository from '@modules/users/repositories/UsersRepository';
+import FindAllProvidersDTO from '@modules/users/dtos/FindAllProvidersDTO';
 import User from '../../infra/typeorm/entities/User';
 
 class FakeUsersRepository implements UsersRepository {
   private users: User[] = [];
+
+  async findAllProviders({
+    removedUserId,
+  }: FindAllProvidersDTO): Promise<User[]> {
+    let { users } = this;
+
+    if (removedUserId)
+      users = this.users.filter(user => user.id !== removedUserId);
+
+    return users;
+  }
 
   public async create(data: CreateUserDTO): Promise<User> {
     const user = new User();
